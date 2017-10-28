@@ -17,12 +17,20 @@ import MySQLdb
 from scrapy.http import Request
 from scrapy.http import FormRequest
 
+#new xpath
+# //*[@id="mc_mainWrapper"]/div[3]/div[2]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tbody/tr[1]/td[2]
 TOGGLING_DIV_NUM=6
-YEARS_XPATH6='/html/body/center[2]/div/div[1]/div[6]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[3]/td/text()';
-YEARS_XPATH8='/html/body/center[2]/div/div[1]/div[8]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[3]/td/text()';
+# YEARS_XPATH6='//*[@id="mc_mainWrapper"]/div[3]/div[2]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[1]/td/text()'
+# YEARS_XPATH8='//*[@id="mc_mainWrapper"]/div[3]/div[2]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[1]/td/text()'
+YEARS_XPATH6='//*[@id="mc_mainWrapper"]/div[3]/div[2]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[3]/td/text()'
+YEARS_XPATH8='//*[@id="mc_mainWrapper"]/div[3]/div[2]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[3]/td/text()'
+# YEARS_XPATH6='/html/body/center[2]/div/div[1]/div[6]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[3]/td/text()';
+# YEARS_XPATH8='/html/body/center[2]/div/div[1]/div[8]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr[3]/td/text()';
 
-DATAROWS_6XPATH='/html/body/center[2]/div/div[1]/div[6]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr';
-DATAROWS_8XPATH='/html/body/center[2]/div/div[1]/div[8]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr'
+DATAROWS_6XPATH='//*[@id="mc_mainWrapper"]/div[3]/div[2]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr';
+DATAROWS_8XPATH='//*[@id="mc_mainWrapper"]/div[3]/div[2]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr';
+# DATAROWS_6XPATH='/html/body/center[2]/div/div[1]/div[6]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr';
+# DATAROWS_8XPATH='/html/body/center[2]/div/div[1]/div[8]/div[3]/div[2]/div[2]/div[2]/div[1]/table[2]/tr'
 
 def ret0IfExist(arr):
     if len(arr):
@@ -58,6 +66,7 @@ class RatiosSpider(scrapy.Spider):
         # print self.start_urls
         # open_in_browser(response)
         years = Selector(response).xpath(YEARS_XPATH8).extract()
+        print(years)
         if(len(years)==0):
             years = Selector(response).xpath(YEARS_XPATH6).extract()
         lastYear=0;
@@ -70,9 +79,9 @@ class RatiosSpider(scrapy.Spider):
             except:
                 lastYear=0;
                 print('not found years')
-        dataRows = Selector(response).xpath(DATAROWS_8XPATH)
+        dataRows = Selector(response).xpath(DATAROWS_6XPATH)
         if(len(dataRows)==0):
-            dataRows = Selector(response).xpath(DATAROWS_6XPATH)
+            dataRows = Selector(response).xpath(DATAROWS_8XPATH)
         print("after")
         conn = MySQLdb.connect(
             user='stocks_user',
